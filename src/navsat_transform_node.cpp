@@ -36,7 +36,7 @@
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "navsat_transform_node");
+  ros::init(argc, argv, "navsat_transform");
 
   ros::NodeHandle nh;
   ros::NodeHandle nh_priv("~");

@@ -41,8 +41,9 @@ if(NOT EIGEN3_FOUND)
   set(EIGEN_PACKAGE Eigen)
 endif()
 
-set_directory_properties(PROPERTIES COMPILE_OPTIONS "-std=c++14;-Wall;-Werror")
+
 add_definitions(-DEIGEN_NO_DEBUG -DEIGEN_MPL2_ONLY)
+set_directory_properties(PROPERTIES COMPILE_OPTIONS "-std=c++14;-Wall;-Werror;-g;-O0")
 
 set(ROSLINT_CPP_OPTS "--filter=-build/c++11,-runtime/references")
 roslint_cpp()

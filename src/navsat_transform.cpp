@@ -606,7 +606,7 @@ namespace RobotLocalization
         RosFilterUtilities::quatToRPY(target_frame_trans.getRotation(), roll_offset, pitch_offset, yaw_offset);
         RosFilterUtilities::quatToRPY(transform_orientation_, roll, pitch, yaw);
 
-        ROS_DEBUG_STREAM("Initial orientation is " << transform_orientation_);
+        ROS_INFO_STREAM("Initial orientation is " << transform_orientation_);
 
         // Apply the offset (making sure to bound them), and throw them in a vector
         tf2::Vector3 rpy_angles(FilterUtilities::clampRotation(roll - roll_offset),
@@ -621,7 +621,7 @@ namespace RobotLocalization
         rpy_angles = mat * rpy_angles;
         transform_orientation_.setRPY(rpy_angles.getX(), rpy_angles.getY(), rpy_angles.getZ());
 
-        ROS_DEBUG_STREAM("Initial corrected orientation roll, pitch, yaw is (" <<
+        ROS_INFO_STREAM("Initial corrected orientation roll, pitch, yaw is (" <<
                          rpy_angles.getX() << ", " << rpy_angles.getY() << ", " << rpy_angles.getZ() << ")");
 
         has_transform_imu_ = true;
