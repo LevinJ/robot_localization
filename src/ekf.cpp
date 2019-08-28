@@ -50,6 +50,52 @@ namespace RobotLocalization
   Ekf::~Ekf()
   {
   }
+//  static bool reject_gps(Eigen::VectorXd &innovationSubset, Eigen::MatrixXd &measurementCovarianceSubset){
+//	  return false;
+//	  const static Eigen::Vector3d limit_lower({-100, -100, -100});
+//	  const static Eigen::Vector3d limit_upper({ 100, 100, 100});
+//	  const static Eigen::Vector3d limit_conv({1,1,1});
+//
+//	  bool bReject= false;
+//	  for(int i=0; i< innovationSubset.size(); i++){
+//		  if(measurementCovarianceSubset(i,i) < limit_conv(i)){
+//			  continue;
+//		  }
+//		  if(innovationSubset(i) > limit_upper(i)){
+//			  bReject = true;
+//			  break;
+//		  }else if(innovationSubset(i) < limit_lower(i)){
+//			  bReject = true;
+//			  break;
+//		  }
+//	  }
+//	  return bReject;
+//  }
+  static bool innovation_saturation_gps(Eigen::VectorXd &innovationSubset, Eigen::MatrixXd &measurementCovarianceSubset){
+//	return false;
+
+
+  	const static Eigen::Vector3d limit_innov({100, 100, 10});
+
+  	const static Eigen::Vector3d limit_conv({25,25,25});
+
+  	bool bupdated = false;
+  	for(int i=0; i< innovationSubset.size(); i++){
+  		if(measurementCovarianceSubset(i,i) < limit_conv(i)){
+  			continue;
+  		}
+  		if(fabs(innovationSubset(i)) > limit_innov(i)){
+  			bupdated = true;
+  			if(innovationSubset(i) > 0){
+  				innovationSubset(i) = limit_innov(i);
+  			}else{
+  				innovationSubset(i) = -limit_innov(i);
+  			}
+
+  		}
+  	}
+  	return bupdated;
+  }
 
   void Ekf::correct(const Measurement &measurement)
   {
@@ -181,6 +227,17 @@ namespace RobotLocalization
       }
     }
 
+    //saturated innovation
+    if(measurement.topicName_  == "odom0_pose"){
+//    	if(reject_gps(innovationSubset, measurementCovarianceSubset)){
+//    		FB_DEBUG("reject gps: "<< innovationSubset <<"\n");
+//    		return;
+//    	}
+    	bool bupdated = innovation_saturation_gps(innovationSubset, measurementCovarianceSubset);
+    	if(bupdated){
+    		FB_DEBUG("original innovation is: "<< (measurementSubset - stateSubset)<<"\n")
+    	}
+    }
     // (2) Check Mahalanobis distance between mapped measurement and state.
     if (checkMahalanobisThreshold(innovationSubset, hphrInv, measurement.mahalanobisThresh_))
     {
