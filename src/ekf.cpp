@@ -228,16 +228,16 @@ namespace RobotLocalization
     }
 
     //saturated innovation
-    if(measurement.topicName_  == "odom0_pose"){
+//    if(measurement.topicName_  == "odom0_pose"){
 //    	if(reject_gps(innovationSubset, measurementCovarianceSubset)){
 //    		FB_DEBUG("reject gps: "<< innovationSubset <<"\n");
 //    		return;
 //    	}
-    	bool bupdated = innovation_saturation_gps(innovationSubset, measurementCovarianceSubset);
-    	if(bupdated){
-    		FB_DEBUG("original innovation is: "<< (measurementSubset - stateSubset)<<"\n")
-    	}
-    }
+//    	bool bupdated = innovation_saturation_gps(innovationSubset, measurementCovarianceSubset);
+//    	if(bupdated){
+//    		FB_DEBUG("original innovation is: "<< (measurementSubset - stateSubset)<<"\n")
+//    	}
+//    }
     // (2) Check Mahalanobis distance between mapped measurement and state.
     if (checkMahalanobisThreshold(innovationSubset, hphrInv, measurement.mahalanobisThresh_))
     {
