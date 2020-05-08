@@ -71,31 +71,31 @@ namespace RobotLocalization
 //	  }
 //	  return bReject;
 //  }
-  static bool innovation_saturation_gps(Eigen::VectorXd &innovationSubset, Eigen::MatrixXd &measurementCovarianceSubset){
-//	return false;
-
-
-  	const static Eigen::Vector3d limit_innov({100, 100, 10});
-
-  	const static Eigen::Vector3d limit_conv({25,25,25});
-
-  	bool bupdated = false;
-  	for(int i=0; i< innovationSubset.size(); i++){
-  		if(measurementCovarianceSubset(i,i) < limit_conv(i)){
-  			continue;
-  		}
-  		if(fabs(innovationSubset(i)) > limit_innov(i)){
-  			bupdated = true;
-  			if(innovationSubset(i) > 0){
-  				innovationSubset(i) = limit_innov(i);
-  			}else{
-  				innovationSubset(i) = -limit_innov(i);
-  			}
-
-  		}
-  	}
-  	return bupdated;
-  }
+//  static bool innovation_saturation_gps(Eigen::VectorXd &innovationSubset, Eigen::MatrixXd &measurementCovarianceSubset){
+////	return false;
+//
+//
+//  	const static Eigen::Vector3d limit_innov({100, 100, 10});
+//
+//  	const static Eigen::Vector3d limit_conv({25,25,25});
+//
+//  	bool bupdated = false;
+//  	for(int i=0; i< innovationSubset.size(); i++){
+//  		if(measurementCovarianceSubset(i,i) < limit_conv(i)){
+//  			continue;
+//  		}
+//  		if(fabs(innovationSubset(i)) > limit_innov(i)){
+//  			bupdated = true;
+//  			if(innovationSubset(i) > 0){
+//  				innovationSubset(i) = limit_innov(i);
+//  			}else{
+//  				innovationSubset(i) = -limit_innov(i);
+//  			}
+//
+//  		}
+//  	}
+//  	return bupdated;
+//  }
 
   void Ekf::correct(const Measurement &measurement)
   {
